@@ -1,30 +1,15 @@
-{% extends 'base.html' %} {% block content %}
-<div class="container base-content">
-    <div class="row">
-        <div class="col text-center">
-            <br>
-            <h3 class="text-center">HIGHSCORE BOARD</h3>
-            <div class="">
-                <table class="table table-striped table-bordered table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Rank</th>
-                            <th>Username</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in range(10) %}
-                        <tr>
-                            <th scope="row"> {{ i + 1 }}</th>
-                            <td> {{ usernames_and_scores[i][0] }} </td>
-                            <td> {{ usernames_and_scores[i][1] }} </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+{% extends "base.html" %}
+{% block title %}Highscores{% endblock %}
+{% block content %}
+<h1>Highscores</h1>
+{% if usernames_and_scores %}
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%">
+    <tr style="background:#2980b9;color:white"><th>#</th><th>Username</th><th>Score</th></tr>
+    {% for name, score in usernames_and_scores %}
+    <tr><td>{{ loop.index }}</td><td>{{ name | e }}</td><td>{{ score }}</td></tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No scores yet. Be the first!</p>
+{% endif %}
 {% endblock %}

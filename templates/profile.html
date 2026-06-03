@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<h1>Profile: {{ user['username'] }}</h1>
+<p>Role: {{ user['role'] }}</p>
+<p>Member since: {{ user['created_at'] }}</p>
+<h2>Game History</h2>
+{% if scores %}
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%">
+    <tr style="background:#2980b9;color:white"><th>Score</th><th>Date</th></tr>
+    {% for s in scores %}
+    <tr><td>{{ s['score'] }}</td><td>{{ s['completed_at'] }}</td></tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No games played yet.</p>
+{% endif %}
+{% endblock %}

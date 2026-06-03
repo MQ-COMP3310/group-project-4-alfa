@@ -1,15 +1,11 @@
-{% extends 'base.html' %} {% block content %}
-<div class="container base-content">
-    <div class="row justify-content-center">
-        <div class="col text-center">
-            <h1>CONGRATULATIONS {{ username.upper() }}!</h1>
-            <p>You made it to the end.</p>
-            <p>Your final score was {{ score }}</p>
-            <form method="POST">
-                <input type="hidden" name="highscores" value="highscores">
-                <button class="btn btn-dark hvr-round-corners">Highscores</button>
-            </form>
-        </div>
-    </div>
-</div>
+{% extends "base.html" %}
+{% block title %}Congratulations!{% endblock %}
+{% block content %}
+<h1>Congratulations, {{ username }}!</h1>
+<p>You completed all riddles! Your score: <strong>{{ score }}</strong></p>
+<!-- SECURITY [SR-3]: CSRF token on view highscores form -->
+<form method="POST" action="{{ url_for('congrats', username=username) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="submit" value="View Highscores">
+</form>
 {% endblock %}

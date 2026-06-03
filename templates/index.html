@@ -1,17 +1,14 @@
-{% extends 'base.html' %} {% block content %}
-<div class="container base-content main-page">
-    <div class="row">
-        <div class="col text-center">
-            <br>
-            <form method="POST">
-                <label for="username">To Continue, Please Enter Your Name</label>
-                <br>
-                <input type="text" id="username" name="username" autofocus/>
-                <br>
-                <br>
-                <button class="btn btn-dark hvr-round-corners">Submit</button>
-            </form>
-        </div>
-    </div>
-</div>
+{% extends "base.html" %}
+{% block title %}Home — Riddle Me This{% endblock %}
+{% block content %}
+<h1>Riddle Me This</h1>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<p>Enter a username to start playing:</p>
+<!-- SECURITY [SR-3]: CSRF token on every POST form -->
+<form method="POST" action="{{ url_for('index') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" maxlength="30" required>
+    <input type="submit" value="Play">
+</form>
 {% endblock %}

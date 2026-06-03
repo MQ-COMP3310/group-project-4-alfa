@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<h1>Create Account</h1>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+<!-- SECURITY [SR-3]: CSRF token on registration POST form -->
+<form method="POST" action="{{ url_for('auth.register') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="username">Username (3-30 alphanumeric):</label>
+    <input type="text" id="username" name="username" minlength="3" maxlength="30" required>
+    <label for="password">Password (8+ chars, 1 uppercase, 1 digit):</label>
+    <input type="password" id="password" name="password" minlength="8" required>
+    <input type="submit" value="Register">
+</form>
+<p>Already registered? <a href="{{ url_for('auth.login') }}">Login here</a></p>
+{% endblock %}

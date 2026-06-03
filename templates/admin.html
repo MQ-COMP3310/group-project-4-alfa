@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+<h2>Users ({{ users|length }})</h2>
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%">
+    <tr style="background:#2980b9;color:white"><th>ID</th><th>Username</th><th>Role</th><th>Created</th><th>Action</th></tr>
+    {% for u in users %}
+    <tr>
+        <td>{{ u['id'] }}</td><td>{{ u['username'] | e }}</td><td>{{ u['role'] }}</td><td>{{ u['created_at'] }}</td>
+        <td>
+            <!-- SECURITY [SR-3]: CSRF token on delete form -->
+            <form method="POST" action="{{ url_for('auth.delete_user', user_id=u['id']) }}" style="display:inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" onclick="return confirm('Delete user?')" style="background:#e74c3c">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<h2>Recent Scores</h2>
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%">
+    <tr style="background:#2980b9;color:white"><th>ID</th><th>Username</th><th>Score</th><th>Date</th><th>Action</th></tr>
+    {% for s in scores %}
+    <tr>
+        <td>{{ s['id'] }}</td><td>{{ s['username'] | e }}</td><td>{{ s['score'] }}</td><td>{{ s['completed_at'] }}</td>
+        <td>
+            <form method="POST" action="{{ url_for('auth.delete_score', score_id=s['id']) }}" style="display:inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" onclick="return confirm('Delete score?')" style="background:#e74c3c">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

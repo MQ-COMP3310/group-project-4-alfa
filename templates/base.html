@@ -1,65 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
-
-  <meta charset="utf-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <meta name="description" content="Riddle Game">
-
-  <meta name="author" content="Shaun Nugent">
-
-  <title>Riddle Me This</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
-  <!-- Fontawesome CSS -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-
-  <!-- Hover.CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" />
-  
-  <!-- Custom styles -->
-  <link href="{{ url_for('static', filename='custom/css/styles.css') }}" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Riddle Me This{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; background: #f5f5f5; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+        .error { color: #c0392b; background: #fadbd8; padding: 10px; border-radius: 4px; margin-bottom: 15px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 10px; color: #2980b9; text-decoration: none; }
+        input[type=text], input[type=password] { width: 100%; padding: 8px; margin: 6px 0 14px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button, input[type=submit] { background: #2980b9; color: white; border: none; padding: 10px 22px; border-radius: 4px; cursor: pointer; }
+    </style>
 </head>
-
 <body>
-
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand hvr-grow" href="{{ url_for('index') }}">
-          <img src="../static/img/logo_white.png" width="150" height="30" alt="">
-        </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item hvr-grow">
-            <a class="nav-link" href="{{ url_for('index') }}"><i class="fas fa-dice"></i> New Game</a>
-          </li>
-          <li class="nav-item hvr-grow">
-            <a class="nav-link" href="{{ url_for('highscores') }}"><i class="fas fa-trophy"></i> Highscores</a>
-          </li>
-        </ul>
-      </div>
+<div class="container">
+    <div class="nav">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('highscores') }}">Highscores</a>
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('auth.profile') }}">Profile</a>
+            <form style="display:inline" method="POST" action="{{ url_for('auth.logout') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" style="background:none;color:#e74c3c;border:none;cursor:pointer;padding:0;">Logout</button>
+            </form>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.register') }}">Register</a>
+        {% endif %}
     </div>
-  </nav>
-
-  <!-- Page Content -->
-  {% block content %} {% endblock %}
-  <!-- /.container -->
-
-  <!-- Bootstrap core JavaScript -->
-  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
+    {% block content %}{% endblock %}
+</div>
 </body>
-
 </html>
